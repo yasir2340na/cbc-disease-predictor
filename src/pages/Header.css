@@ -1,0 +1,19 @@
+/* src/components/Header.css */
+.app-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .logo-container {
+    flex: 1;
+    height: 90px
+  }
+  
+  .app-logo {
+    height: 50px;
+    cursor: pointer
+  }
+  
