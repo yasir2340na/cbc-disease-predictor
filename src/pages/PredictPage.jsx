@@ -1,13 +1,9 @@
-// PredictPage.jsx
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { UserIcon, CalendarIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
-// Ensure these images have transparent backgrounds (PNG) and are placed in src/assets/
-import femaledoctor from '/src/pages/femaledoctor.jpg';
-import maledoctor from '/src/pages/maledoctor.jpg';
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Patient's name is required"),
@@ -20,21 +16,6 @@ const validationSchema = Yup.object({
 
 const PredictPage = () => {
   const navigate = useNavigate();
-  const formRef = useRef(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-
-  // Measure form container to size images
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (formRef.current) {
-        const { clientWidth, clientHeight } = formRef.current;
-        setDimensions({ width: clientWidth, height: clientHeight });
-      }
-    };
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, []);
 
   const handleSubmit = (values) => {
     console.log(values);
@@ -42,29 +23,57 @@ const PredictPage = () => {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center bg-gradient-to-br from-teal-100 via-blue-50 to-indigo-100 overflow-hidden">
-      {/* Left doctor animation, sized to form container, with blend mode for transparent bg */}
-      <motion.img
-        src={femaledoctor}
-        alt="Female Doctor holding report"
-        className="hidden md:block absolute left-0 object-contain mix-blend-multiply"
-        style={{ width: dimensions.width, height: dimensions.height }}
-        initial={{ y: 0 }}
-        animate={{ y: [-10, 10, -10] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      />
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50 py-6 sm:py-12 px-4 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-10 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 left-10 w-72 h-72 bg-cyan-400/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+      </div>
 
-      {/* Form container (measured via ref) */}
-      <div
-        ref={formRef}
-        className="z-10 bg-white/90 backdrop-blur-lg p-8 rounded-3xl shadow-2xl max-w-md w-full mx-4 transition-all duration-300 hover:shadow-3xl"
-      >
-        <header className="mb-8 text-center">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-            User Information
-          </h1>
-          <div className="mt-3 h-1 bg-gradient-to-r from-teal-200 to-blue-200 rounded-full w-20 mx-auto animate-pulse" />
-        </header>
+      <div className="relative max-w-3xl mx-auto">
+        {/* Medical Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-8 sm:mb-12"
+        >
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ duration: 0.6, type: 'spring' }}
+            className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-600 via-cyan-500 to-teal-500 rounded-3xl mb-4 shadow-2xl shadow-blue-500/30 animate-glow"
+          >
+            <UserIcon className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+          </motion.div>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2">Patient Information</h1>
+          <p className="text-sm sm:text-base text-slate-600 px-4">Enter patient details to begin CBC analysis</p>
+        </motion.div>
+
+        {/* Medical Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-white/50 p-6 sm:p-10"
+        >
+          {/* Medical Info Banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl sm:rounded-2xl p-4 sm:p-5 mb-6 sm:mb-8 border-2 border-blue-100/50"
+          >
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                <CalendarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-800 text-xs sm:text-sm">Before You Start</h3>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">Ensure all patient information is accurate for reliable CBC analysis</p>
+              </div>
+            </div>
+          </motion.div>
 
         <Formik
           initialValues={{ name: '', age: '', gender: '' }}
@@ -72,58 +81,73 @@ const PredictPage = () => {
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
-            <Form className="space-y-6">
+            <Form className="space-y-5 sm:space-y-6">
               {/* Name Field */}
-              <div className="relative">
-                <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-                  User Name
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+                className="relative"
+              >
+                <label htmlFor="name" className="block text-sm font-semibold text-slate-700 mb-2">
+                  Patient Full Name *
                 </label>
                 <Field
                   id="name"
                   name="name"
-                  className="w-full px-4 py-3 border-0 rounded-xl bg-gray-50/80 focus:ring-2 focus:ring-teal-500 focus:border-transparent shadow-sm transition-all duration-300 placeholder-gray-400/70"
-                  placeholder="Enter full name"
+                  className="w-full px-4 py-3 sm:py-4 border-2 border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm sm:text-base hover:border-slate-300 shadow-sm hover:shadow-md"
+                  placeholder="John Doe"
                 />
                 <ErrorMessage
                   name="name"
                   component="div"
-                  className="mt-1 text-sm text-rose-600 flex items-center gap-1 animate-fade-in"
+                  className="mt-2 text-xs sm:text-sm text-rose-600 font-medium"
                 />
-              </div>
+              </motion.div>
 
               {/* Age Field */}
-              <div className="relative">
-                <label htmlFor="age" className="block text-sm font-semibold text-gray-700 mb-2">
-                  Age
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+                className="relative"
+              >
+                <label htmlFor="age" className="block text-sm font-semibold text-slate-700 mb-2">
+                  Age (years) *
                 </label>
                 <Field
                   id="age"
                   name="age"
                   type="number"
-                  className="w-full px-4 py-3 border-0 rounded-xl bg-gray-50/80 focus:ring-2 focus:ring-teal-500 focus:border-transparent shadow-sm transition-all duration-300"
-                  placeholder="Enter patient age"
+                  className="w-full px-4 py-3 sm:py-4 border-2 border-slate-200 rounded-xl bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-sm sm:text-base hover:border-slate-300 shadow-sm hover:shadow-md"
+                  placeholder="25"
                 />
                 <ErrorMessage
                   name="age"
                   component="div"
-                  className="mt-1 text-sm text-rose-600 flex items-center gap-1 animate-fade-in"
+                  className="mt-2 text-xs sm:text-sm text-rose-600 font-medium"
                 />
-              </div>
+              </motion.div>
 
               {/* Gender Field */}
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Gender</label>
-                <div className="flex gap-4">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 }}
+                className="space-y-2"
+              >
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Gender *</label>
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   {['Male', 'Female'].map((gender) => (
-                    <label key={gender} className="flex-1 cursor-pointer">
+                    <label key={gender} className="cursor-pointer group">
                       <Field
                         type="radio"
                         name="gender"
                         value={gender}
                         className="peer hidden"
                       />
-                      <div className="w-full p-3 text-center rounded-xl bg-gray-50/80 peer-checked:bg-teal-500/10 peer-checked:ring-2 peer-checked:ring-teal-500 transition-all duration-300 hover:bg-teal-50/50">
-                        <span className="text-gray-700 peer-checked:text-teal-700 font-medium">{gender}</span>
+                      <div className="p-3 sm:p-4 text-center rounded-xl border-2 border-slate-200 bg-white peer-checked:border-blue-500 peer-checked:bg-gradient-to-br peer-checked:from-blue-50 peer-checked:to-cyan-50 hover:border-slate-300 transition-all shadow-sm hover:shadow-md group-hover:scale-[1.02]">
+                        <span className="text-slate-700 peer-checked:text-blue-700 font-semibold text-sm sm:text-base">{gender}</span>
                       </div>
                     </label>
                   ))}
@@ -131,34 +155,29 @@ const PredictPage = () => {
                 <ErrorMessage
                   name="gender"
                   component="div"
-                  className="mt-1 text-sm text-rose-600 flex items-center gap-1 animate-fade-in"
+                  className="mt-2 text-xs sm:text-sm text-rose-600 font-medium"
                 />
-              </div>
+              </motion.div>
 
               {/* Submit Button */}
-              <button
+              <motion.button
                 type="submit"
-                className="w-full bg-gradient-to-r from-teal-600 to-blue-600 hover:from-blue-600 hover:to-teal-600 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-0.5 group flex items-center justify-center gap-2"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                whileHover={{ scale: 1.02, boxShadow: '0 20px 40px rgba(59, 130, 246, 0.4)' }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 text-white font-bold py-4 sm:py-5 px-6 rounded-xl shadow-xl hover:shadow-2xl transition-all group flex items-center justify-center gap-2 text-base sm:text-lg"
                 disabled={isSubmitting}
               >
-                <span>Submit & Predict</span>
-                <ArrowRightIcon className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
+                <span>Continue to CBC Entry</span>
+                <ArrowRightIcon className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </motion.button>
             </Form>
           )}
         </Formik>
+        </motion.div>
       </div>
-
-      {/* Right doctor animation, sized to form container, with blend mode for transparent bg */}
-      <motion.img
-        src={maledoctor}
-        alt="Male Doctor holding report"
-        className="hidden md:block absolute right-0 object-contain mix-blend-multiply"
-        style={{ width: dimensions.width, height: dimensions.height }}
-        initial={{ y: 0 }}
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      />
     </div>
   );
 };

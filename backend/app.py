@@ -43,8 +43,8 @@ def predict():
             # Inputs already preprocessed in frontend as numeric list
             if not isinstance(inputs, list) or len(inputs) != 10:
                 return jsonify({'error': 'Invalid leukemia input format'}), 400
-            scaled_values = anemia_scaler.transform([inputs])
-            prediction = leukemia_model.predict([scaled_values])[0]
+            values = np.array(inputs, dtype=float)
+            prediction = leukemia_model.predict([values])[0]
 
         else:
             return jsonify({'error': 'Invalid disease type'}), 400

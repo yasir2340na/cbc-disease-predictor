@@ -1,121 +1,84 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
-const anemiaFields = [
-  { name: 'gender', label: 'Gender', type: 'select', options: ['Male', 'Female'] },
-  { name: 'haemoglobin', label: 'Haemoglobin (g/dL)' },
-  { name: 'mch', label: 'MCH (pg)' },
-  { name: 'mchc', label: 'MCHC (g/dL)' },
-  { name: 'mcv', label: 'MCV (fL)' }
-];
-
-const leukemiaFields = [
-  { name: 'age', label: 'Age', type: 'number' },
-  { name: 'gender', label: 'Gender', type: 'select', options: ['Male', 'Female'] },
-  { name: 'wbc', label: 'WBC Count (10^9/L)' },
-  { name: 'rbc', label: 'RBC Count (10^12/L)' },
-  { name: 'platelets', label: 'Platelet Count (10^9/L)' },
-  { name: 'haemoglobin', label: 'Haemoglobin (g/dL)' },
-  { name: 'geneticMutation', label: 'Genetic Mutation', type: 'select', options: ['Yes', 'No'] },
-  { name: 'familyHistory', label: 'Family History', type: 'select', options: ['Yes', 'No'] },
-  { name: 'smoking', label: 'Smoking Status', type: 'select', options: ['Yes', 'No'] },
-  { name: 'alcohol', label: 'Alcohol Consumption', type: 'select', options: ['Yes', 'No'] },
-  { name: 'radiationExposure', label: 'Radiation Exposure', type: 'select', options: ['Yes', 'No'] },
-  { name: 'infection', label: 'Infection History', type: 'select', options: ['Yes', 'No'] },
-  { name: 'bmi', label: 'BMI', type: 'select', options: ['Underweight', 'Normal', 'Overweight'] },
-  { name: 'chronicIllness', label: 'Chronic Illness', type: 'select', options: ['Yes', 'No'] },
-  { name: 'immuneDisease', label: 'Immune Disorders', type: 'select', options: ['Yes', 'No'] },
-  { name: 'socioeconomic', label: 'Socioeconomic Status', type: 'select', options: ['Low', 'Medium', 'High'] },
-  { name: 'urbanRural', label: 'Urban or Rural Area', type: 'select', options: ['Urban', 'Rural'] }
-];
-
-const EnterCBCValuesPage = () => {
-  const [disease, setDisease] = useState('');
-  const [formData, setFormData] = useState({});
+const ConfirmDataPage = () => {
+  const location = useLocation();
   const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    navigate('/verify-input', { state: { disease, formData } });
-  };
-
-  const renderFields = (fields, perRow) => {
-    const rows = [];
-    for (let i = 0; i < fields.length; i += perRow) {
-      const rowFields = fields.slice(i, i + perRow);
-      rows.push(
-        <div key={i} className="flex gap-4 mb-4 flex-wrap">
-          {rowFields.map((field) => (
-            <div key={field.name} className="flex-1 min-w-[30%]">
-              <label className="block font-semibold mb-1">{field.label}</label>
-              {field.type === 'select' ? (
-                <select
-                  name={field.name}
-                  value={formData[field.name] || ''}
-                  onChange={handleChange}
-                  className="w-full p-2 border rounded-md"
-                >
-                  <option value="">Select</option>
-                  {field.options.map((opt) => (
-                    <option key={opt} value={opt}>{opt}</option>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  type={field.type || 'text'}
-                  name={field.name}
-                  value={formData[field.name] || ''}
-                  onChange={handleChange}
-                  className="w-full p-2 border rounded-md"
-                />
-              )}
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return rows;
-  };
+  const ocrText = location.state?.ocrText || '';
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-pink-100 to-indigo-200">
-      <div className="bg-white p-10 rounded-xl shadow-xl w-full max-w-5xl">
-        <h1 className="text-3xl font-bold text-center text-indigo-700 mb-6">🔬 Enter CBC Test Values</h1>
-
-        <div className="mb-6">
-          <label className="block font-bold mb-2">Select Disease</label>
-          <select
-            value={disease}
-            onChange={(e) => {
-              setFormData({});
-              setDisease(e.target.value);
-            }}
-            className="w-full p-3 border rounded-md"
-          >
-            <option value="">-- Choose Disease --</option>
-            <option value="anemia">Anemia</option>
-            <option value="leukemia">Leukemia</option>
-          </select>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50 to-blue-100 px-4 py-10">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="max-w-5xl mx-auto glass rounded-3xl p-8 md:p-10"
+      >
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-800">Review OCR Extraction</h1>
+            <p className="text-slate-600 mt-2">
+              Validate the extracted text from your CBC report before continuing to manual input.
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <button
+              onClick={() => navigate('/upload-report')}
+              className="px-5 py-2.5 rounded-full bg-white text-slate-700 border border-slate-200 hover:border-slate-300 shadow-sm transition"
+            >
+              Re-upload
+            </button>
+            <button
+              onClick={() => navigate('/enter-cbc-values')}
+              className="px-5 py-2.5 rounded-full bg-slate-900 text-white shadow hover:shadow-md transition"
+            >
+              Continue
+            </button>
+          </div>
         </div>
 
-        {disease && (
-          <form onSubmit={handleSubmit}>
-            {renderFields(disease === 'anemia' ? anemiaFields : leukemiaFields, disease === 'anemia' ? 2 : 3)}
-            <button
-              type="submit"
-              className="w-full mt-6 bg-indigo-600 text-white py-3 rounded-md text-lg hover:bg-indigo-700 transition"
-            >
-              Next: Verify Inputs
-            </button>
-          </form>
-        )}
-      </div>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white/80 rounded-2xl p-6 border border-white/60 shadow-sm">
+            <h2 className="text-lg font-semibold text-slate-800 mb-3">Extracted Text</h2>
+            <textarea
+              value={ocrText}
+              readOnly
+              className="w-full h-80 p-4 text-sm bg-slate-50 rounded-xl border border-slate-200 resize-none"
+              placeholder="OCR text will appear here"
+            />
+            <p className="text-xs text-slate-500 mt-2">
+              If the text looks incorrect, re-upload the report with better lighting or sharper focus.
+            </p>
+          </div>
+
+          <div className="bg-white/80 rounded-2xl p-6 border border-white/60 shadow-sm">
+            <h2 className="text-lg font-semibold text-slate-800 mb-3">Next Steps</h2>
+            <ul className="space-y-3 text-slate-600 text-sm">
+              <li>• Switch to manual entry to input exact CBC values.</li>
+              <li>• Use the OCR text as reference to avoid typing errors.</li>
+              <li>• Verify values carefully before prediction.</li>
+            </ul>
+
+            <div className="mt-6 space-y-3">
+              <button
+                onClick={() => navigate('/enter-cbc-values')}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-600 text-white font-semibold shadow hover:shadow-lg transition"
+              >
+                Go to CBC Entry
+              </button>
+              <button
+                onClick={() => navigate('/predict')}
+                className="w-full py-3 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold hover:border-slate-300 transition"
+              >
+                Back to Predict Home
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 };
 
-export default EnterCBCValuesPage;
+export default ConfirmDataPage;
