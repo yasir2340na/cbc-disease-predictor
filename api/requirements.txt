@@ -1,6 +1,4 @@
 flask
-scikit-learn
 numpy
-pandas
-joblib
+scikit-learn
 xgboost
