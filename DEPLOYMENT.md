@@ -35,6 +35,23 @@ This guide covers deploying the CBC Disease Predictor to various hosting platfor
    - Output Directory: `dist`
    - Install Command: `npm install`
 
+### Vercel (Full Stack with Python API)
+
+This repository includes a Vercel Serverless Function at `api/predict.py`.
+
+1. **Deploy with Vercel**
+   - Root Directory: `./`
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+
+2. **Environment Variables (Vercel Project Settings)**
+   - `VITE_SITE_URL` → your production URL (e.g. `https://your-app.vercel.app`)
+
+3. **Notes**
+   - The frontend calls the API at `/api/predict` in production.
+   - For local development, set `VITE_API_BASE_URL=http://localhost:5000`.
+   - Update the URLs in `public/sitemap.xml` to your final domain.
+
 ### Netlify
 
 1. **Install Netlify CLI**

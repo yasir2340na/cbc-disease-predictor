@@ -39,6 +39,7 @@ const VerifyInputPage = () => {
   const { disease, formData } = location.state || {};
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api';
 
   if (!disease || !formData) {
     return <div className="p-10 text-center text-red-500">❌ No data provided</div>;
@@ -52,7 +53,7 @@ const VerifyInputPage = () => {
 
     try {
       const payloadInputs = disease === 'leukemia' ? transformedInputs : formData;
-      const response = await fetch('http://localhost:5000/predict', {
+      const response = await fetch(`${apiBaseUrl}/predict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ disease, inputs: payloadInputs })

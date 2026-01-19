@@ -1,0 +1,27 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFF7ED"/>
+      <stop offset="50%" stop-color="#FFEDD5"/>
+      <stop offset="100%" stop-color="#FEF3C7"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F97316"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" rx="32" fill="url(#bg)"/>
+  <circle cx="980" cy="140" r="120" fill="#FDBA74" fill-opacity="0.35"/>
+  <circle cx="220" cy="520" r="160" fill="#FDE68A" fill-opacity="0.4"/>
+  <rect x="120" y="140" width="960" height="350" rx="28" fill="white" fill-opacity="0.85" stroke="#FED7AA" stroke-width="3"/>
+  <text x="170" y="260" font-family="Arial, Helvetica, sans-serif" font-size="56" font-weight="700" fill="#111827">
+    CBC Disease Predictor
+  </text>
+  <text x="170" y="330" font-family="Arial, Helvetica, sans-serif" font-size="30" fill="#374151">
+    AI-powered screening for anemia and leukemia
+  </text>
+  <rect x="170" y="370" width="280" height="56" rx="28" fill="url(#accent)"/>
+  <text x="204" y="408" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="600" fill="white">
+    Predict with CBC
+  </text>
+</svg>

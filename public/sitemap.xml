@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://your-domain.vercel.app/</loc>
+  </url>
+  <url>
+    <loc>https://your-domain.vercel.app/predict</loc>
+  </url>
+  <url>
+    <loc>https://your-domain.vercel.app/upload-report</loc>
+  </url>
+  <url>
+    <loc>https://your-domain.vercel.app/confirm-data</loc>
+  </url>
+  <url>
+    <loc>https://your-domain.vercel.app/enter-cbc-values</loc>
+  </url>
+  <url>
+    <loc>https://your-domain.vercel.app/verify-input</loc>
+  </url>
+  <url>
+    <loc>https://your-domain.vercel.app/prediction-result</loc>
+  </url>
+  <url>
+    <loc>https://your-domain.vercel.app/login</loc>
+  </url>
+  <url>
+    <loc>https://your-domain.vercel.app/signup</loc>
+  </url>
+</urlset>
